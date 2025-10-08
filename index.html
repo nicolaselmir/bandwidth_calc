@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sport Streaming Bandwidth Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #4fc3f7;
+            font-size: 2.5em;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .input-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .input-section h2 {
+            color: #81c784;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #b0b0b0;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4fc3f7;
+            box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .results-section {
+            background: rgba(79, 195, 247, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(79, 195, 247, 0.2);
+        }
+
+        .results-section h2 {
+            color: #4fc3f7;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            color: #b0b0b0;
+            font-weight: 500;
+        }
+
+        .result-value {
+            color: #4fc3f7;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .highlight {
+            background: rgba(79, 195, 247, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #4fc3f7;
+        }
+
+        .highlight .result-value {
+            font-size: 1.3em;
+            color: #81c784;
+        }
+
+        .info-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-section h3 {
+            color: #ffb74d;
+            margin-bottom: 15px;
+        }
+
+        .info-section p {
+            color: #b0b0b0;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="calculator-grid">
+            <div class="input-section">
+                <h2>📊 Streaming Parameters</h2>
+                
+                <div class="form-group">
+                    <label for="concurrentViewers">Average Concurrent Viewers:</label>
+                    <input type="number" id="concurrentViewers" value="100" min="1" max="100000">
+                </div>
+                
+                <div class="form-group">
+                    <label for="videoQuality">Video Quality:</label>
+                    <select id="videoQuality">
+                        <option value="480">480p (SD) - 1 Mbps</option>
+                        <option value="720">720p (HD) - 2.5 Mbps</option>
+                        <option value="1080" selected>1080p (Full HD) - 5 Mbps</option>
+                        <option value="1440">1440p (2K) - 10 Mbps</option>
+                        <option value="2160">2160p (4K) - 20 Mbps</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="audioQuality">Audio Quality:</label>
+                    <select id="audioQuality">
+                        <option value="64">64 kbps (Basic)</option>
+                        <option value="128" selected>128 kbps (Standard)</option>
+                        <option value="256">256 kbps (High)</option>
+                        <option value="320">320 kbps (Premium)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="streamsPerWeek">Streams per Week:</label>
+                    <input type="number" id="streamsPerWeek" value="3" min="1" max="7">
+                </div>
+                
+                <div class="form-group">
+                    <label for="streamDuration">Average Stream Duration (hours):</label>
+                    <input type="number" id="streamDuration" value="2" min="0.5" max="24" step="0.5">
+                </div>
+                
+                <div class="form-group">
+                    <label for="weeksPerYear">Weeks Active per Year:</label>
+                    <input type="number" id="weeksPerYear" value="52" min="1" max="52">
+                </div>
+            </div>
+            
+            <div class="results-section">
+                <h2>📈 Yearly Bandwidth Results</h2>
+                
+                <div class="result-item">
+                    <span class="result-label">Total Streams per Year:</span>
+                    <span class="result-value" id="totalStreams">156</span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">Total Streaming Hours:</span>
+                    <span class="result-value" id="totalHours">312 hours</span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">Peak Bandwidth Needed:</span>
+                    <span class="result-value" id="peakBandwidth">512.8 Mbps</span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">Total Data Transfer (Year):</span>
+                    <span class="result-value" id="yearlyDataTransfer">72.0 TB</span>
+                </div>
+                
+                <div class="highlight">
+                    <div class="result-item">
+                        <span class="result-label">Recommended Server Bandwidth:</span>
+                        <span class="result-value" id="recommendedBandwidth">1.0 Gbps</span>
+                    </div>
+                </div>
+                
+                <div class="highlight">
+                    <div class="result-item">
+                        <span class="result-label">Monthly Data Transfer:</span>
+                        <span class="result-value" id="monthlyDataTransfer">6.0 TB</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h3>💡 Yearly Calculation Notes</h3>
+            <p><strong>Total Streams:</strong> Calculated as streams per week × weeks per year (e.g., 3 streams/week × 52 weeks = 156 streams/year).</p>
+            <p><strong>Total Streaming Hours:</strong> Total streams × average stream duration (e.g., 156 streams × 2 hours = 312 hours/year).</p>
+            <p><strong>Peak Bandwidth:</strong> Maximum bandwidth needed during any single stream (viewers × bitrate).</p>
+            <p><strong>Yearly Data Transfer:</strong> Total data consumed across all streams for the entire year.</p>
+            <p><strong>Monthly Data Transfer:</strong> Yearly total divided by 12 months for monthly planning.</p>
+            <p><strong>Recommended Bandwidth:</strong> Peak bandwidth with 20% overhead for network fluctuations.</p>
+        </div>
+    </div>
+
+    <script>
+        // Bandwidth calculation logic
+        const videoBitrates = {
+            480: 1,    // Mbps
+            720: 2.5,  // Mbps
+            1080: 5,   // Mbps
+            1440: 10,  // Mbps
+            2160: 20   // Mbps
+        };
+
+        function calculateBandwidth() {
+            // Get input values
+            const viewers = parseInt(document.getElementById('concurrentViewers').value) || 0;
+            const videoQuality = parseInt(document.getElementById('videoQuality').value);
+            const audioQuality = parseInt(document.getElementById('audioQuality').value);
+            const streamsPerWeek = parseInt(document.getElementById('streamsPerWeek').value) || 0;
+            const duration = parseFloat(document.getElementById('streamDuration').value) || 0;
+            const weeksPerYear = parseInt(document.getElementById('weeksPerYear').value) || 0;
+
+            // Calculate bandwidths per stream
+            const videoBitrate = videoBitrates[videoQuality];
+            const audioBitrate = audioQuality / 1000; // Convert kbps to Mbps
+            
+            const videoBandwidth = viewers * videoBitrate;
+            const audioBandwidth = viewers * audioBitrate;
+            const peakBandwidth = videoBandwidth + audioBitrate;
+            
+            // Calculate yearly totals
+            const totalStreams = streamsPerWeek * weeksPerYear;
+            const totalHours = totalStreams * duration;
+            
+            // Calculate data transfer per stream (in GB)
+            const dataTransferPerStream = (peakBandwidth * duration * 3600) / 8 / 1024; // Convert Mbps*hours to GB
+            
+            // Calculate yearly data transfer (in TB)
+            const yearlyDataTransfer = (dataTransferPerStream * totalStreams) / 1024; // Convert GB to TB
+            const monthlyDataTransfer = yearlyDataTransfer / 12;
+            
+            // Recommended bandwidth with 20% overhead
+            const recommendedBandwidth = peakBandwidth * 1.2;
+
+            // Update display
+            document.getElementById('totalStreams').textContent = totalStreams.toLocaleString();
+            document.getElementById('totalHours').textContent = `${totalHours.toLocaleString()} hours`;
+            document.getElementById('peakBandwidth').textContent = `${peakBandwidth.toFixed(1)} Mbps`;
+            document.getElementById('yearlyDataTransfer').textContent = `${yearlyDataTransfer.toFixed(1)} TB`;
+            document.getElementById('monthlyDataTransfer').textContent = `${monthlyDataTransfer.toFixed(1)} TB`;
+            document.getElementById('recommendedBandwidth').textContent = `${recommendedBandwidth.toFixed(1)} Gbps`;
+        }
+
+        // Add event listeners for real-time updates
+        document.getElementById('concurrentViewers').addEventListener('input', calculateBandwidth);
+        document.getElementById('videoQuality').addEventListener('change', calculateBandwidth);
+        document.getElementById('audioQuality').addEventListener('change', calculateBandwidth);
+        document.getElementById('streamsPerWeek').addEventListener('input', calculateBandwidth);
+        document.getElementById('streamDuration').addEventListener('input', calculateBandwidth);
+        document.getElementById('weeksPerYear').addEventListener('input', calculateBandwidth);
+
+        // Initial calculation
+        calculateBandwidth();
+    </script>
+</body>
+</html>

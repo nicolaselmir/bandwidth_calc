@@ -1,0 +1,23 @@
+{
+  "name": "sport-streaming-bandwidth-calculator",
+  "version": "1.0.0",
+  "description": "A bandwidth calculator for sport streaming platforms to calculate yearly bandwidth consumption",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build step required for static HTML'",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [
+    "bandwidth",
+    "calculator",
+    "streaming",
+    "sports",
+    "vercel"
+  ],
+  "author": "Nicolas",
+  "license": "MIT",
+  "devDependencies": {
+    "vercel": "^32.0.0"
+  }
+}
